@@ -10,8 +10,7 @@ import {
   Text,
   View
 } from "react-native";
-
-import { getRandomBrewdog } from "./punkapi";
+import { getRandomBrewdog } from "./helpers/punkapi";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,15 +30,13 @@ export default class App extends React.Component {
   _getRandomBrewdogWithFeedback = () => {
     this.setState({ isLoading: true });
 
-    getRandomBrewdog()
-      .then(beer =>
-        this.setState({
-          name: beer.name,
-          description: beer.description,
-          isLoading: false // la requête est terminée
-        })
-      )
-      .catch(error => console.error(error));
+    getRandomBrewdog().then(beer =>
+      this.setState({
+        name: beer.name,
+        description: beer.description,
+        isLoading: false // la requête est terminée
+      })
+    );
   };
 
   componentDidMount() {

@@ -9,4 +9,7 @@ const headers = {
 export const getRandomBrewdog = () =>
   fetch(`${rootEndpoint}/beers/random`, { headers })
     .then(response => response.json())
-    .then(beers => beers[0]);
+    .then(beers => beers[0]) // Access first element of returned array
+    .catch(error => {
+      console.error(error);
+    });
