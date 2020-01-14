@@ -42,7 +42,7 @@ export default class App extends React.Component {
       .catch(error => console.error(error));
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this._getRandomBrewdogWithFeedback();
   }
 
