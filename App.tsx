@@ -5,36 +5,35 @@ import React, { Component } from "react";
 import {
   AppRegistry,
   StyleSheet,
-  ActivityIndicator, // import des composants
+  ActivityIndicator,
   TouchableOpacity,
   Text,
-  View
+  View,
 } from "react-native";
-import { getRandomBrewdog } from "./helpers/punkapi";
+import { getRandomBrewdog, Beer } from "./services/punkapi.service";
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+interface AppState {
+  isLoading: boolean;
+  name: string;
+  description: string;
+}
 
-    // la state de notre composant est utilisé pour
-    // stocker quelques infos renvoyées par l'API
-    this.state = {
-      name: "", // nom de la bière
-      description: "", // sa description
-      isLoading: false // la requête API est-elle en cours ?
-    };
-  }
+export default class App extends Component<{}, AppState> {
+  // Initial state
+  state: AppState = {
+    name: "",
+    description: "",
+    isLoading: false,
+  };
 
-  // nous externalisons cette fonction afin de
-  // pouvoir l'appeler lorsqu'on le souhaite
   _getRandomBrewdogWithFeedback = () => {
     this.setState({ isLoading: true });
 
-    getRandomBrewdog().then(beer =>
+    getRandomBrewdog().then((beer: Beer) =>
       this.setState({
         name: beer.name,
         description: beer.description,
-        isLoading: false // la requête est terminée
+        isLoading: false, // Request is finished
       })
     );
   };
@@ -45,14 +44,14 @@ export default class App extends React.Component {
 
   render() {
     const content = this.state.isLoading ? (
-      <ActivityIndicator /> // si requête en cours, on affiche un spinner
+      <ActivityIndicator /> // If a request is pending, display a spinner
     ) : (
       <View style={styles.infosContainer}>
         <Text style={styles.name}>{this.state.name}</Text>
 
         <Text style={styles.description}>{this.state.description}</Text>
 
-        <TouchableOpacity // on ajoute un "bouton" qui requête une autre bière aléatoire
+        <TouchableOpacity // Add a button to fetch another beer
           onPress={this._getRandomBrewdogWithFeedback}
           style={styles.button}
         >
@@ -70,19 +69,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  // ajout de styles divers
   infosContainer: {
-    margin: 30
+    margin: 30,
   },
   name: {
     fontSize: 18,
     fontWeight: "700",
-    marginBottom: 10
+    marginBottom: 10,
   },
   description: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   button: {
     borderWidth: 1,
@@ -90,6 +88,6 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 5,
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
