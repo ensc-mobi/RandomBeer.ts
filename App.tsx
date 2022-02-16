@@ -13,9 +13,9 @@ import {
 import { getRandomBrewdog, Beer } from "./services/punkapi.service";
 
 interface AppState {
-  isLoading: boolean;
-  name: string;
-  description: string;
+  isLoading: boolean; // Is a beer request pending?
+  name: string; // Beer name
+  description: string; // Beer description
 }
 
 export default class App extends Component<{}, AppState> {
@@ -26,7 +26,9 @@ export default class App extends Component<{}, AppState> {
     isLoading: false,
   };
 
+  // Function called when user want to search for another beer
   _getRandomBrewdogWithFeedback = () => {
+    // Begin a new request for a beer
     this.setState({ isLoading: true });
 
     getRandomBrewdog().then((beer: Beer) =>
